@@ -7,10 +7,10 @@ import (
 )
 
 func main() {
-	fmt.Println(anagramms([]string{"пятак", "пятка", "тяпка", "листок", "слиток", "столик", "стол"}))
+	fmt.Println(anagrams([]string{"пятак", "пятка", "тяпка", "листок", "слиток", "столик", "стол"}))
 }
 
-func anagramms(input []string) map[string][]string {
+func anagrams(input []string) map[string][]string {
 	temp := make(map[string]string)
 	result := make(map[string][]string)
 

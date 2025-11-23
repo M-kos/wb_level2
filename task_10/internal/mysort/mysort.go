@@ -36,7 +36,16 @@ var monthMap = map[string]int{
 	"Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
 }
 
+var (
+	ErrInvalidArgumentForTheKflag = errors.New("invalid argument for the -k flag")
+	ErrNeedPathToFile             = errors.New("need path to file")
+)
+
 func Run() ([]string, error) {
+	if len(os.Args) < 2 {
+		return nil, ErrNeedPathToFile
+	}
+
 	filePath := getFilePath()
 	reader := getReader(filePath)
 	return runSort(reader)
@@ -233,12 +242,6 @@ func getReader(filePath string) io.Reader {
 }
 
 func parseFlags() (*SortOptions, error) {
-	if len(os.Args) < 2 {
-		return nil, fmt.Errorf("usage: %s [flags] FILE", os.Args[0])
-	}
-
-	fmt.Println(os.Args)
-
 	options := &SortOptions{}
 	flags := make([]string, 0)
 
@@ -258,12 +261,12 @@ func parseFlags() (*SortOptions, error) {
 		switch flagsStr[i] {
 		case 'k':
 			if i+1 >= len(flagsStr) {
-				return nil, fmt.Errorf("invalid argument for the k flag")
+				return nil, ErrInvalidArgumentForTheKflag
 			}
 
 			n, err := strconv.Atoi(string(flagsStr[i+1]))
 			if err != nil || n <= 0 {
-				return nil, fmt.Errorf("invalid argument for the k flag")
+				return nil, ErrInvalidArgumentForTheKflag
 			}
 
 			options.Column = uint(n)
